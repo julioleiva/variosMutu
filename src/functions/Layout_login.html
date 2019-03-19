@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<style type="text/css">
+    .modalBackground {
+        background-color: Gray;
+        filter: alpha(opacity=30);
+        opacity: 0.7;
+    }
+
+    .modalPopup {
+        background-color: White;
+        border-width: 0px;
+        border-style: solid;
+        border-color: Gray;
+        /*	padding:3px;*/
+        width: 250px;
+        font-size: 0.9em !important;
+    }
+
+    .boton_verde_ancho {
+        background-color: #E00027;
+        _background-color: #E00027;
+        background-repeat: no-repeat;
+        padding-bottom: 5px;
+        width: 180px !important;
+        color: #FFFFFF;
+        float: right;
+        font-weight: bold;
+        height: 25px;
+        margin: 0;
+        text-align: center;
+        border: none;
+        cursor: pointer;
+        font-size: 0.8em;
+    }
+
+    .boton_verde_ancho:hover {
+        background-color: #BA1720;
+        _background-color: #BA1720;
+    }
+
+    .boton_verde_ancho:active {
+        background-color: #CCCCCC;
+        _background-color: #CCCCCC;
+    }
+
+    td,
+    th {
+        padding: 3px !important;
+        border-style: outset;
+        border-width: 1px;
+    }
+
+    thead {
+        font-weight: bold;
+    }
+
+
+    .modalBrowser {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgb(0, 0, 0);
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .modalBrowser-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 50%;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+</style>
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Mutualidad de la Abogacía</title>
+    @*@Styles.Render("~/Content/Css")*@
+    @Scripts.Render("~/bundles/modernizr")
+    <script src="~/Scripts/JS/login.js"></script>
+    @Scripts.Render("~/bundles/jquery")
+    <link rel='stylesheet' id='main-css' href='~/Content/Css/app.css' type='text/css' media='all' />
+
+    <noscript>
+        <style type="text/css">
+            .wpb_animate_when_almost_visible {
+                opacity: 1;
+            }
+        </style>
+        <div class="MensajeError">
+            Esta aplicación requiere que su navegador tenga JavaScript habilitado y el suyo no lo tiene. Suerte en la
+            vida.
+        </div>
+    </noscript>
+
+</head>
+
+<body
+    class="page-template page-template-page-login page-template-page-login-php page page-id-5419 wpb-js-composer js-comp-ver-5.4.2 vc_responsive">
+    <div id="browserCaution"></div>
+    <header>
+        <div class="blue-bar">
+            <div class="white-bar"></div>
+            <div class="container-fluid">
+                <ul>
+                    <!--<li class="chat"><a class="small-text" href="javascript:$zopim.livechat.window.show();">Live chat</a></li>-->
+                    <li class="contact">
+                        <span class="small-text">
+                            <svg xmlns="https://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 28 28"
+                                src="~/Content/cellphoneInverted.svg">
+                                <title>cellphone</title>
+                                <path
+                                    d="M20.068 10.935a.434.434 0 0 1-.796.335 4.89 4.89 0 0 0-1.089-1.466 4.893 4.893 0 0 0-1.522-1.034.432.432 0 1 1 .336-.796 5.719 5.719 0 0 1 1.801 1.215c.53.496.962 1.088 1.27 1.746zm2.793 0a.435.435 0 0 1-.838.224 7.352 7.352 0 0 0-.74-1.773 7.524 7.524 0 0 0-2.738-2.654 7.31 7.31 0 0 0-1.759-.726.434.434 0 0 1 .223-.838 8.378 8.378 0 0 1 5.837 5.837l.015-.07z">
+                                </path>
+                                <path
+                                    d="M25.542 10.935a.434.434 0 0 1-.852.168 9.914 9.914 0 0 0-.991-2.793v.098a10.077 10.077 0 0 0-1.746-2.346 9.996 9.996 0 0 0-5.111-2.793.434.434 0 1 1 .168-.852c1.048.208 2.06.571 3.002 1.075a11.01 11.01 0 0 1 2.57 1.899 10.988 10.988 0 0 1 1.843 2.598c.506.941.868 1.954 1.075 3.002l.042-.056zm2.263 11.829l-7.011-5.027a.432.432 0 0 0-.559 0l-.698.697-.713.699c-1.34 1.34-3.463.963-5.446-.252a12.889 12.889 0 0 1-4.189-4.189c-1.201-1.984-1.592-4.092-.265-5.419l1.396-1.396a.434.434 0 0 0 0-.601L5.069.237a.432.432 0 0 0-.6-.097L2.882 1.675 4.483 3.84l1.34 1.773L7.122 7.43a.433.433 0 1 1-.698.516L5.125 6.172 3.813 4.398 2.255 2.28l-.342.331a6.844 6.844 0 0 0-1.396 7.416c.908 2.919 3.254 6.313 7.039 10.096l.153.154.629.614c3.659 3.548 6.983 5.739 9.776 6.605a6.743 6.743 0 0 0 7.205-1.396l.456-.456-2.159-1.582-1.773-1.299-1.773-1.299a.435.435 0 0 1 .515-.699l1.773 1.299 1.774 1.299 2.263 1.657c.712-.72 1.526-1.555 1.588-1.672a.43.43 0 0 0-.178-.584z">
+                                </path>
+                            </svg>
+                            914 35 24 86
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed js-hamburguer-menu" data-toggle="collapse"
+                        data-target="#navbar-collapse" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar up"></span>
+                        <span class="icon-bar middle"></span>
+                        <span class="icon-bar down"></span>
+                    </button>
+                    <a class="navbar-brand" href="https://www.mutualidadabogacia.com">
+                        <img class="brand-gif" src="~/Content/img/hexagono.gif">
+                        <img class="brand-svg" src="~/Content/img/mutualidadAbogacia.svg" alt="Mutualidad">
+                    </a>
+                </div>
+                <div class="collapse navbar-collapse navbar-right" id="navbar-collapse">
+                    <ul id="menu-menu" class="nav navbar-nav nav-mobile">
+                        <li id="menu-item-96"
+                            class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-96 dropdown">
+                            <a title="Quiero ser mutualista" href="#" data-toggle="dropdown" class="dropdown-toggle"
+                                aria-haspopup="true">Quiero ser mutualista <span class="caret"></span></a>
+                            <ul role="menu" class="dropdown-menu">
+                                <li id="menu-item-844"
+                                    class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-844 dropdown">
+                                    <a title="Por qué la Mutualidad"
+                                        href="https://www.mutualidadabogacia.com/quiero-ser-mutualista/por-que-la-mutualidad/">Por
+                                        qué la Mutualidad</a>
+                                    <ul role="menu" class="dropdown-menu">
+                                        <li id="menu-item-98"
+                                            class="menu-item menu-item-type-post_type menu-item-object-page menu-item-98">
+                                            <a title="¿Qué es la Mutualidad?"
+                                                href="https://www.mutualidadabogacia.com/quiero-ser-mutualista/por-que-la-mutualidad/que-es-la-mutualidad/">¿Qué
+                                                es la Mutualidad?</a></li>
+                                        <li id="menu-item-101"
+                                            class="menu-item menu-item-type-post_type menu-item-object-page menu-item-101">
+                                            <a title="Ventajas de ser mutualista"
+                                                href="https://www.mutualidadabogacia.com/quiero-ser-mutualista/por-que-la-mutualidad/ventajas-de-ser-mutualista/">Ventajas
+                                                de ser mutualista</a></li>
+                                    </ul>
+                                </li>
+                                <li id="menu-item-102"
+                                    class="menu-item menu-item-type-post_type menu-item-object-page menu-item-102"><a
+                                        title="Quién puede ser mutualista"
+                                        href="https://www.mutualidadabogacia.com/quiero-ser-mutualista/quien-puede-ser-mutualista/">Quién
+                                        puede ser mutualista</a></li>
+                                <li id="menu-item-104"
+                                    class="menu-item menu-item-type-post_type menu-item-object-page menu-item-104"><a
+                                        title="Alternativa al Régimen de Autónomos"
+                                        href="https://www.mutualidadabogacia.com/quiero-ser-mutualista/alternativa-al-reta/">Alternativa
+                                        al Régimen de Autónomos</a></li>
+                                <li id="menu-item-103"
+                                    class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a
+                                        title="Recomendador de Planes"
+                                        href="https://www.mutualidadabogacia.com/quiero-ser-mutualista/recomendador-de-planes/">Recomendador
+                                        de Planes</a></li>
+                                <li id="menu-item-1771"
+                                    class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1771"><a
+                                        title="Futuros Abogados"
+                                        href="https://www.mutualidadabogacia.com/quiero-ser-mutualista/futuros-abogados/">Futuros
+                                        Abogados</a></li>
+                            </ul>
+                        </li>
+                        <li id="menu-item-109"
+                            class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-109 dropdown">
+                            <a title="Soy mutualista" href="#" data-toggle="dropdown" class="dropdown-toggle"
+                                aria-haspopup="true">Soy mutualista <span class="caret"></span></a>
+                            <ul role="menu" class="dropdown-menu">
+                                <li id="menu-item-110"
+                                    class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-110 dropdown">
+                                    <a title="Soluciones a medida"
+                                        href="https://www.mutualidadabogacia.com/soy-mutualista/soluciones-a-medida/">Soluciones
+                                        a medida</a>
+                                    <ul role="menu" class="dropdown-menu">
+                                        <li id="menu-item-111"
+                                            class="nav-parent menu-item menu-item-type-post_type menu-item-object-page menu-item-111">
+                                            <a title="Ahorro – Jubilación"
+                                                href="https://www.mutualidadabogacia.com/soy-mutualista/soluciones-a-medida/ahorro-jubilacion/">Ahorro
+                                                – Jubilación</a></li>
+                                        <li id="menu-item-1250"
+                                            class="nav-child menu-item menu-item-type-post_type menu-item-object-products menu-item-1250">
+                                            <a title="Plan Universal"
+                                                href="https://www.mutualidadabogacia.com/productos/plan-universal/">Plan
+                                                Universal</a></li>
+                                        <li id="menu-item-1217"
+                                            class="nav-child menu-item menu-item-type-post_type menu-item-object-products menu-item-1217">
+                                            <a title="Plan de Ahorro 5"
+                                                href="https://www.mutualidadabogacia.com/productos/plan-de-ahorro-5/">Plan
+                                                de Ahorro 5</a></li>
+                                        <li id="menu-item-1222"
+                                            class="nav-child menu-item menu-item-type-post_type menu-item-object-products menu-item-1222">
+                                            <a title="Plan Junior"
+                                                href="https://www.mutualidadabogacia.com/productos/plan-junior/">Plan
+                                                Junior</a></li>
+                                        <li id="menu-item-1221"
+                                            class="nav-child menu-item menu-item-type-post_type menu-item-object-products menu-item-1221">
+                                            <a title="Renta Vitalicia Remunerada"
+                                                href="https://www.mutualidadabogacia.com/productos/rentas-vitalicias/">Renta
+                                                Vitalicia Remunerada</a></li>
+                                        <li id="menu-item-116"
+                                            class="nav-parent menu-item menu-item-type-post_type menu-item-object-page menu-item-116">
+                                            <a title="Protección"
+                                                href="https://www.mutualidadabogacia.com/soy-mutualista/soluciones-a-medida/proteccion/">Protección</a>
+                                        </li>
+                                        <li id="menu-item-1220"
+                                            class="nav-child menu-item menu-item-type-post_type menu-item-object-products menu-item-1220">
+                                            <a title="Seguro de Vida"
+                                                href="https://www.mutualidadabogacia.com/productos/vida/">Seguro de
+                                                Vida</a></li>
+                                        <li id="menu-item-1219"
+                                            class="nav-child menu-item menu-item-type-post_type menu-item-object-products menu-item-1219">
+                                            <a title="Plus Salud"
+                                                href="https://www.mutualidadabogacia.com/productos/plus-salud/">Plus
+                                                Salud</a></li>
+                                        <li id="menu-item-1218"
+                                            class="nav-child menu-item menu-item-type-post_type menu-item-object-products menu-item-1218">
+                                            <a title="Accidentes Universal"
+                                                href="https://www.mutualidadabogacia.com/productos/accidentes-universal/">Accidentes
+                                                Universal</a></li>
+                                    </ul>
+                                </li>
+                                <li id="menu-item-120"
+                                    class="menu-item menu-item-type-post_type menu-item-object-page menu-item-120"><a
+                                        title="Club Privilegia"
+                                        href="https://www.mutualidadabogacia.com/soy-mutualista/club-privilegia/">Club
+                                        Privilegia</a></li>
+                                <li id="menu-item-122"
+                                    class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-122 dropdown">
+                                    <a title="Base de conocimientos"
+                                        href="https://www.mutualidadabogacia.com/soy-mutualista/base-de-conocimientos/">Base
+                                        de conocimientos</a>
+                                    <ul role="menu" class="dropdown-menu">
+                                        <li id="menu-item-123"
+                                            class="menu-item menu-item-type-post_type menu-item-object-page menu-item-123">
+                                            <a title="Guías"
+                                                href="https://www.mutualidadabogacia.com/soy-mutualista/base-de-conocimientos/guias/">Guías</a>
+                                        </li>
+                                        <li id="menu-item-124"
+                                            class="menu-item menu-item-type-post_type menu-item-object-page menu-item-124">
+                                            <a title="Revista ‘Mutualidad de la Abogacía’"
+                                                href="https://www.mutualidadabogacia.com/soy-mutualista/base-de-conocimientos/revista-mutualidad-de-la-abogacia/">Revista
+                                                ‘Mutualidad de la Abogacía’</a></li>
+                                    </ul>
+                                </li>
+                                <li id="menu-item-5033"
+                                    class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5033"><a
+                                        title="Haz mutualista a un familiar"
+                                        href="https://www.mutualidadabogacia.com/quiero-ser-mutualista/haz-mutualista-familiar/">Haz
+                                        mutualista a un familiar</a></li>
+                            </ul>
+                        </li>
+                        <li id="menu-item-125"
+                            class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-125 dropdown">
+                            <a title="Institucional" href="#" data-toggle="dropdown" class="dropdown-toggle"
+                                aria-haspopup="true">Institucional <span class="caret"></span></a>
+                            <ul role="menu" class="dropdown-menu">
+                                <li id="menu-item-126"
+                                    class="menu-item menu-item-type-post_type menu-item-object-page menu-item-126"><a
+                                        title="Historia"
+                                        href="https://www.mutualidadabogacia.com/institucional/historia/">Historia</a>
+                                </li>
+                                <li id="menu-item-127"
+                                    class="menu-item menu-item-type-post_type menu-item-object-page menu-item-127"><a
+                                        title="Gobierno"
+                                        href="https://www.mutualidadabogacia.com/institucional/gobierno/">Gobierno</a>
+                                </li>
+                                <li id="menu-item-131"
+                                    class="menu-item menu-item-type-post_type menu-item-object-page menu-item-131"><a
+                                        title="Empresa"
+                                        href="https://www.mutualidadabogacia.com/institucional/empresa/">Empresa</a>
+                                </li>
+                                <li id="menu-item-132"
+                                    class="menu-item menu-item-type-post_type menu-item-object-page menu-item-132"><a
+                                        title="Cátedra Mutualidad"
+                                        href="https://www.mutualidadabogacia.com/institucional/catedra-mutualidad/">Cátedra
+                                        Mutualidad</a></li>
+                                <li id="menu-item-105"
+                                    class="menu-item menu-item-type-post_type menu-item-object-page menu-item-105"><a
+                                        title="Fundación"
+                                        href="https://www.mutualidadabogacia.com/institucional/fundacion/">Fundación</a>
+                                </li>
+                                <li id="menu-item-4527"
+                                    class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4527"><a
+                                        title="Sala de prensa"
+                                        href="https://www.mutualidadabogacia.com/sala-de-prensa/">Sala de prensa</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li id="menu-item-133"
+                            class="menu-item menu-item-type-post_type menu-item-object-page menu-item-133"><a
+                                title="Blog" href="https://www.mutualidadabogacia.com/blog/">Blog</a></li>
+                        <li id="menu-item-134"
+                            class="menu-item menu-item-type-post_type menu-item-object-page menu-item-134"><a
+                                title="Jóvenes Abogados"
+                                href="https://www.mutualidadabogacia.com/jovenes-abogados/">Jóvenes Abogados</a></li>
+                    </ul>
+                    <div id="search-icon">
+                        <svg xmlns="https://www.w3.org/2000/svg" id="Layer_1" viewBox="0 0 512 512"
+                            src="https://www.mutualidadabogacia.com/wp-content/themes/lmdla/resources/images/search-icon.svg"
+                            width="35" height="55">
+                            <style>
+                                .st0 {
+                                    fill: #e33d21;
+                                }
+                            </style>
+                            <path class="st0"
+                                d="M495.6 466.4L373.8 339.6c31.3-37.2 48.5-84.3 48.5-132.9C422.3 92.7 329.5 0 215.6 0S8.8 92.7 8.8 206.7s92.7 206.7 206.7 206.7c42.8 0 83.6-12.9 118.4-37.4l122.8 127.7c5.1 5.3 12 8.3 19.4 8.3 7 0 13.6-2.7 18.7-7.5 10.8-10.4 11.1-27.4.8-38.1zm-280-412.5c84.3 0 152.8 68.5 152.8 152.8s-68.5 152.8-152.8 152.8S62.8 291 62.8 206.7 131.3 53.9 215.6 53.9z">
+                            </path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+
+        <form role="search" method="get" class="searchform group" action="https://www.mutualidadabogacia.com/">
+            <div class="container-fluid">
+                <label>
+                    <span class="offscreen">Buscar:</span>
+                    <input type="search" class="search-field" placeholder="Búsqueda" value="" name="s"
+                        title="Buscar:" />
+
+                </label>
+                <button type="submit"></button>
+            </div>
+        </form>
+    </header>
+
+
+    <div id="content-body" class="login-page">
+        @RenderBody()
+
+    </div>
+
+    <div id="modalBrowserId" class="modalBrowser">
+
+        <!-- Modal content -->
+        <div class="modalBrowser-content">
+            <span class="close">&times;</span>
+            <p id="message"></p>
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3 col-sm-3 col-xs-12">
+                    <nav>
+                        <ul id="menu-menu-footer" class="menu-footer">
+                            <li id="menu-item-141"
+                                class="menu-item menu-item-type-post_type menu-item-object-page menu-item-141"><a
+                                    href="https://www.mutualidadabogacia.com/faq/">Preguntas frecuentes</a></li>
+                            <li id="menu-item-951"
+                                class="menu-item menu-item-type-post_type menu-item-object-page menu-item-951"><a
+                                    href="https://www.mutualidadabogacia.com/contactanos/">Contáctanos</a></li>
+                            <li id="menu-item-1683"
+                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1683"><a
+                                    href="https://mutualidaddelaabogacia.pro-talento.com/">Trabaja con nosotros</a></li>
+                            <li id="menu-item-3790"
+                                class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3790"><a
+                                    href="https://www.mutualidadabogacia.com/webs-de-interes/">Webs de interés</a></li>
+                            <li id="menu-item-3792"
+                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3792"><a
+                                    href="https://mutualidadabogacia.com/wp-content/uploads/2017/05/ma_CATALOGO-INMUEBLES.pdf">Catálogo
+                                    inmuebles</a></li>
+                            <li id="menu-item-951"
+                                class="menu-item menu-item-type-post_type menu-item-object-page menu-item-951"><a
+                                    href="https://www.mutualidadabogacia.com/aviso-legal/">Aviso Legal</a></li>
+                            <li id="menu-item-1683"
+                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1683"><a
+                                    href="https://www.mutualidadabogacia.com/politica-de-privacidad/">Política de
+                                    Privacidad</a></li>
+                            <li id="menu-item-3790"
+                                class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3790"><a
+                                    href="https://www.mutualidadabogacia.com/politica-de-cookies/">Política de
+                                    cookies</a></li>
+                            <li id="menu-item-3792"
+                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3792"><a
+                                    href="https://www.mutualidadabogacia.com/clausulas-informativas-de-proteccion-de-datos/">Cláusulas
+                                    informativas de protección de datos</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-12">
+                    <nav>
+                        <ul>
+                            <li class="small-text blue"><strong>Sede central:</strong></li>
+                            <li class="small-text blue">C/ Serrano, 9. 28001 Madrid</li>
+                            <li class="small-text blue"><strong>Información:</strong></li>
+                            <li class="small-text blue">914 35 24 86</li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 social-media">
+                    <div class="row">
+                        <div class="col-xs-12">
+
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 relative">
+                            <nav class="nav-social-media">
+                                <ul>
+                                    <li><a href="https://twitter.com/MutuaAbogacia" class="twitter" target="_blank"></a>
+                                    </li>
+                                    <li><a href="https://www.facebook.com/MutualidadAbogacia" class="facebook"
+                                            target="_blank"></a></li>
+
+                                    <li><a href="https://www.linkedin.com/company/mutualidad-de-la-abogac-a?trk=top_nav_home"
+                                            class="linkedin" target="_blank"></a></li>
+                                    <li><a href="https://www.instagram.com/mutuaabogacia/" class="instagram"
+                                            target="_blank"></a></li>
+                                    <li><a href="https://www.youtube.com/channel/UCI3b2kvnOZ2mBHyBnqV2_zA"
+                                            class="youtube" target="_blank"></a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row sub-footer">
+                <div class="col-xs-12">
+                    <nav>
+                        <p class="small-text blue"><strong>Mutualidad de la Abogacía</strong> © 2018</p>
+                        <ul id="menu-footer-menu-copyright" class="small-text">
+                            <li id="menu-item-907"
+                                class="menu-item menu-item-type-post_type menu-item-object-page menu-item-907"><a
+                                    href="https://www.mutualidadabogacia.com/mapa-web/">Mapa web</a></li>
+                            <li id="menu-item-906"
+                                class="menu-item menu-item-type-post_type menu-item-object-page menu-item-906"><a
+                                    href="https://www.mutualidadabogacia.com/aviso-legal-y-cookies/">Aviso Legal y
+                                    Cookies</a></li>
+                            <li id="menu-item-905"
+                                class="menu-item menu-item-type-post_type menu-item-object-page menu-item-905"><a
+                                    href="https://www.mutualidadabogacia.com/proteccion-de-datos/">Política de
+                                    protección de datos</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function getBrowser() {
+            var ua = navigator.userAgent, tem,
+                M = ua.match(/(opera|chrome|safari|firefox|msie|edge|trident(?=\/))\/?\s*(\d+)/i) || [];
+            if (/trident/i.test(M[1])) {
+                tem = /\brv[ :]+(\d+)/g.exec(ua) || [];
+                return 'IE ' + (tem[1] || '');
+            }
+            if (M[1] === 'Chrome') {
+                tem = ua.match(/\b(OPR|Edge)\/(\d+)/);
+                if (tem != null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
+            }
+            M = M[2] ? [M[1], M[2]] : [navigator.appName, navigator.appVersion, '-?'];
+            if ((tem = ua.match(/version\/(\d+)/i)) != null) M.splice(1, 1, tem[1]);
+            // return M.join(' ');
+            return {
+                name: M[0],
+                version: M[1]
+            }
+        }
+
+        function msgBrowser() {
+            var browser = getBrowser();
+            var modal = document.getElementById('modalBrowserId');
+            var message = document.getElementById('message');
+            var btn = document.getElementById("myBtn");
+            var span = document.getElementsByClassName("close")[0];
+            var divInfo = document.getElementById("browserCaution")
+
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+            if (browser.name.includes('hrome')) {
+                divInfo.innerHTML = 'Navegador no soportado';
+                divInfo.classList.add("MensajeError")
+                modal.style.display = "block";
+                message.innerHTML = "Navegador no soportado";
+            }
+        }
+        msgBrowser();
+
+    </script>
+
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+
+</html>
