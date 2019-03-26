@@ -1,0 +1,70 @@
+@using WebPrivada.Models
+
+@model ProductoModel
+
+@{
+ViewBag.Title = "Plan De Ahorro 5";
+Layout = "~/Views/Shared/_LayoutLateral.cshtml";
+}
+
+<section class="section section-father prevision-profesional">
+    <div id="divCabecera"></div>
+
+    <div class="card">
+
+        <div class="tabs-nav-wrapper">
+            <ul class="section-tabs js-tabs-nav">
+                <li><a class="active" href="#Informacion">Informacion del plan</a></li>
+                <li><a href="#capital-objetivo">Capital Objetivo</a></li>
+            </ul>
+        </div>
+        <div class="card-body body-tab aportaciones" id="Informacion">
+            <div id="tbAportaciones" class="aportaciones-table"></div>
+        </div>
+        <div class="card-body body-tab capital-objetivo  hidden" id="capital-objetivo">
+            <div class="chart-container" id="divLineAhorro">
+
+            </div>
+            <div class="post-chart-table" id="tablaRentas">
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<div id="divSimulacion"></div>
+
+@Html.HiddenFor(m => m.Poliza)
+@Html.HiddenFor(m => m.Producto)
+@Html.HiddenFor(m => m.Referencias)
+@Html.HiddenFor(m => m.Titulo)
+
+@Scripts.Render("~/bundles/Cabecera")
+@Scripts.Render("~/bundles/JSXPAH5")
+@Scripts.Render("~/bundles/WPSimuladorPAH5")
+
+<script>
+
+    function MontarTopBar() {
+        ReactDOM.render(React.createElement(TopBar, { referencias: "@Model.Referencias", titulos: "@Html.Raw(@Model.Titulo)" }), document.getElementById('topbar'));
+    }
+
+    function MontarCabecera() {
+        ReactDOM.render(React.createElement(Cabecera, { poliza: "@Model.Poliza", producto: "@Html.Raw(@Model.Producto)" }), document.getElementById('divCabecera'));
+    }
+
+    function MontarGraficoCapital() {
+        ReactDOM.render(React.createElement(LineCapObj, { poliza: "@Model.Poliza", mainDiv: "lineChartGrafico" }), document.getElementById('divLineAhorro'));
+    }
+
+    function MontarTabla() {
+        ReactDOM.render(React.createElement(TablaBase, { metodoCarga: 'tablaInfoPAH5', poliza: "@Model.Poliza" }), document.getElementById('tbAportaciones'));
+    }
+
+    MontarTopBar();
+    MontarCabecera();
+    MontarTabla()
+    MontarGraficoCapital();
+    MontarSimulacionPAH5(0, 0, 12, 0, "@Model.Poliza", "@Html.Raw(@Model.Producto)");
+
+</script>
